@@ -4,82 +4,147 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Project Umbra - HD-2D MMORPG</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/src/style.css" />
 </head>
 <body>
   <!-- Three.js Canvas Container -->
   <div id="game-container"></div>
 
-  <!-- Ragnarok UI Overlay -->
+  <!-- Modern Dark Fantasy UI Overlay -->
   <div id="ui-overlay">
-    <!-- Top-Left: Character Status Window -->
-    <div id="status-window" class="ro-window">
-      <div class="status-header">
-        <span id="player-name" class="char-name">Novice</span>
-        <span id="player-job" class="char-job">[Novice]</span>
+    
+    <!-- Top-Left: Quest Tracker -->
+    <div id="quest-tracker" class="hud-panel">
+      <div class="quest-header">
+        <div class="quest-icon">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+            <path d="M12 2L2 12l10 10 10-10L12 2zm0 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3zm-1 6h2v6h-2v-6z"/>
+          </svg>
+        </div>
+        <div class="quest-title" id="quest-title">The Lost Relic</div>
       </div>
-      <div class="stat-row">
-        <span class="stat-label">Base Lv:</span>
-        <span id="base-level" class="stat-val">1</span>
-        <span class="stat-label" style="margin-left: 10px;">Job Lv:</span>
-        <span id="job-level" class="stat-val">1</span>
-      </div>
-      <div class="bar-container hp-bar-bg">
-        <div id="hp-bar" class="bar-fill hp-fill" style="width: 100%;"></div>
-        <span id="hp-text" class="bar-text">100 / 100</span>
-      </div>
-      <div class="bar-container sp-bar-bg">
-        <div id="sp-bar" class="bar-fill sp-fill" style="width: 100%;"></div>
-        <span id="sp-text" class="bar-text">30 / 30</span>
-      </div>
+      <div class="quest-objective" id="quest-desc">• Find the lost relic in the Forest of Echoes.</div>
     </div>
 
-    <!-- Top-Center: Target Info Window (when clicking a monster) -->
-    <div id="target-window" class="ro-window" style="display: none;">
-      <div class="target-name-header">
+    <!-- Top-Center: Target Monster Window (When clicked) -->
+    <div id="target-window" class="hud-panel" style="display: none;">
+      <div class="target-header">
+        <span id="target-type-badge">MONSTER</span>
         <span id="target-name">Poring</span>
       </div>
-      <div class="bar-container hp-bar-bg target-bar">
-        <div id="target-hp-bar" class="bar-fill hp-fill" style="width: 100%;"></div>
-        <span id="target-hp-text" class="bar-text">50 / 50</span>
+      <div class="modern-bar-container target-hp-bg">
+        <div id="target-hp-bar" class="modern-bar-fill target-hp-fill" style="width: 100%;"></div>
+        <span id="target-hp-text" class="bar-num">50 / 50</span>
       </div>
     </div>
 
-    <!-- Top-Right: Mini Info & Controls -->
-    <div id="info-window" class="ro-window">
-      <div class="info-title">Prontera Field (08)</div>
-      <div class="info-controls">
-        🖱️ <b>Left-Click:</b> Walk / Attack<br />
-        🔄 <b>Right-Click Drag:</b> Orbit Camera<br />
-        🔍 <b>Scroll:</b> Zoom In/Out<br />
-        💬 <b>Enter:</b> Chat<br />
-        <span id="ping-text">Ping: -- ms</span>
+    <!-- Top-Right: Circular Minimap -->
+    <div id="minimap-container">
+      <div class="minimap-frame">
+        <span class="minimap-compass-n">N</span>
+        <canvas id="minimap-canvas" width="130" height="130"></canvas>
+      </div>
+      <div class="zone-badge">
+        <span class="zone-icon">🍃</span>
+        <span id="zone-name" class="zone-text">Eldenwood Forest</span>
       </div>
     </div>
 
-    <!-- Bottom-Left: Chat Box -->
-    <div id="chat-window" class="ro-window">
-      <div class="chat-tabs">
-        <button class="chat-tab active" data-channel="all">All</button>
-        <button class="chat-tab" data-channel="battle">Battle</button>
+    <!-- Bottom-Left: Modern Character Status (Arin style) -->
+    <div id="character-status" class="hud-panel">
+      <!-- Hexagonal Portrait Frame -->
+      <div class="avatar-container">
+        <div class="avatar-hex">
+          <canvas id="avatar-canvas" width="48" height="48"></canvas>
+        </div>
       </div>
-      <div id="chat-messages" class="chat-body">
-        <div class="chat-msg system">⚔️ Welcome to Project Umbra!</div>
-        <div class="chat-msg system">💡 Click the ground to move, click monsters to attack.</div>
+
+      <!-- Stats Section -->
+      <div class="status-content">
+        <div class="char-title-row">
+          <span id="player-level-badge" class="level-text">Lv. 12</span>
+          <span id="player-name" class="name-text">Arin</span>
+        </div>
+
+        <!-- HP Bar -->
+        <div class="stat-bar-group">
+          <span class="bar-label hp-label">HP</span>
+          <div class="modern-bar-container">
+            <div id="hp-bar" class="modern-bar-fill hp-glow-fill" style="width: 100%;"></div>
+            <span id="hp-text" class="bar-num">458 / 458</span>
+          </div>
+        </div>
+
+        <!-- MP / SP Bar -->
+        <div class="stat-bar-group">
+          <span class="bar-label mp-label">MP</span>
+          <div class="modern-bar-container">
+            <div id="sp-bar" class="modern-bar-fill mp-glow-fill" style="width: 100%;"></div>
+            <span id="sp-text" class="bar-num">72 / 72</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom-Right: Fantasy Action Menu -->
+    <div id="action-menu">
+      <button class="menu-item" id="btn-menu">
+        <div class="item-icon">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M3 21h18M3 10h18M5 6l7-3 7 3v4H5V6zm4 8v7m6-7v7"/>
+          </svg>
+        </div>
+        <span class="item-label">Menu</span>
+      </button>
+
+      <button class="menu-item" id="btn-inventory">
+        <div class="item-icon">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4zM3 6h18m-5 4a4 4 0 0 1-8 0"/>
+          </svg>
+        </div>
+        <span class="item-label">Inventory</span>
+      </button>
+
+      <button class="menu-item" id="btn-skills">
+        <div class="item-icon">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8">
+            <circle cx="12" cy="12" r="9"/>
+            <path d="M12 3v18M3 12h18m-4.5-6.5l-9 9m0-9l9 9"/>
+          </svg>
+        </div>
+        <span class="item-label">Skills</span>
+      </button>
+
+      <button class="menu-item" id="btn-quests">
+        <div class="item-icon">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+            <polyline points="10 9 9 9 8 9"/>
+          </svg>
+        </div>
+        <span class="item-label">Quests</span>
+      </button>
+    </div>
+
+    <!-- Sleek Expandable Chat Box (Positioned elegantly) -->
+    <div id="chat-window">
+      <div id="chat-messages">
+        <div class="chat-msg system">⚔️ Welcome to Project Umbra.</div>
+        <div class="chat-msg system">💡 Click anywhere to walk, click monsters to battle.</div>
       </div>
       <form id="chat-form">
-        <input type="text" id="chat-input" placeholder="Press Enter to chat..." maxlength="100" autocomplete="off" />
+        <input type="text" id="chat-input" placeholder="Press Enter to talk..." maxlength="100" autocomplete="off" />
       </form>
     </div>
 
-    <!-- Bottom-Right: Quick Action Bar -->
-    <div id="action-bar">
-      <button id="btn-attack" class="action-btn" title="Auto Attack Target">⚔️ Atk</button>
-      <button id="btn-sit" class="action-btn" title="Sit / Stand">🧘 Sit</button>
-      <button id="btn-emote" class="action-btn" title="Emote">❤️ /lv</button>
-    </div>
-
-    <!-- Damage Popups Container -->
+    <!-- Floating Damage Numbers Container -->
     <div id="damage-container"></div>
   </div>
 

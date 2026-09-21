@@ -281,10 +281,16 @@ export class Game {
     requestAnimationFrame((t) => this.animate(t));
     const timeSec = timeMs / 1000;
 
-    // 1. Follow Local Player with Camera
+    // 1. Follow Local Player with Camera & Update Minimap
     const localPlayer = this.players.get(this.network.sessionId);
     if (localPlayer) {
       this.cameraController.followTarget(localPlayer.group.position, 0.1);
+      this.hud.updateMinimap(
+        localPlayer.group.position,
+        this.monsters,
+        this.players,
+        this.cameraController.azimuthAngle
+      );
     }
 
     // 2. Animate Dynamic Lighting
