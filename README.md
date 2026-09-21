@@ -16,6 +16,14 @@ A Web-Native, Code-First cross-platform MMORPG inspired by classic Ragnarok Onli
 
 ---
 
+## 🌐 Live Production Links
+
+- **Game Client (Vercel):** [https://dist-six-theta-93.vercel.app](https://dist-six-theta-93.vercel.app)
+- **Game Server (Bonto.dev):** [https://project-umbra.bonto.run](https://project-umbra.bonto.run) (Health check: [https://project-umbra.bonto.run/health](https://project-umbra.bonto.run/health))
+- **GitHub Repository:** [https://github.com/Hitai0/project-umbra](https://github.com/Hitai0/project-umbra)
+
+---
+
 ## Quick Start (Development)
 
 ### 1. Install Dependencies
