@@ -10,6 +10,8 @@
     "dev:server": "npm --workspace=@mmo/server run dev",
     "dev:client": "npm --workspace=@mmo/client run dev",
     "build": "npm --workspaces run build",
+    "build:server": "npm --workspace=@mmo/shared run build && npm --workspace=@mmo/server run build",
+    "start": "node packages/server/dist/index.js",
     "clean": "node -e \"console.log('Cleaning...')\""
   },
   "devDependencies": {

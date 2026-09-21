@@ -81,8 +81,9 @@ export class Game {
     this.scene.add(this.clickRing);
 
     // 6. Network Manager setup
-    const host = window.location.hostname || 'localhost';
-    const serverUrl = `${window.location.protocol === 'https:' ? 'wss:' : 'ws:'}//${host}:2567`;
+    const defaultHost = window.location.hostname || 'localhost';
+    const defaultServerUrl = `${window.location.protocol === 'https:' ? 'wss:' : 'ws:'}//${defaultHost}:2567`;
+    const serverUrl = (import.meta.env.VITE_SERVER_URL as string) || defaultServerUrl;
 
     this.network = new NetworkManager(serverUrl, {
       onConnected: (sessionId) => {
