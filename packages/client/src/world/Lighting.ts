@@ -15,8 +15,8 @@ export class Lighting {
     this.sunLight.position.set(25, 40, 20);
     this.sunLight.castShadow = true;
 
-    this.sunLight.shadow.mapSize.width = 2048;
-    this.sunLight.shadow.mapSize.height = 2048;
+    this.sunLight.shadow.mapSize.width = 1024;
+    this.sunLight.shadow.mapSize.height = 1024;
     this.sunLight.shadow.camera.near = 0.5;
     this.sunLight.shadow.camera.far = 100;
 
