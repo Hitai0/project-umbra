@@ -76,7 +76,13 @@ export class HD2DPostProcessing {
     });
   }
 
-  public render() {
-    this.composer.render();
+  public render(renderer?: THREE.WebGLRenderer, scene?: THREE.Scene, camera?: THREE.Camera) {
+    try {
+      this.composer.render();
+    } catch (err) {
+      if (renderer && scene && camera) {
+        renderer.render(scene, camera);
+      }
+    }
   }
 }

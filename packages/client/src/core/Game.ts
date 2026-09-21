@@ -119,12 +119,30 @@ export class Game {
     this.setupInteractions();
     window.addEventListener('resize', () => this.onResize());
 
-    // 8. Start Loop
+    // 8. Spawn local player representation immediately for 0-latency experience
+    this.spawnLocalPlayer();
+
+    // 9. Start Loop
     this.animate(0);
 
-    // Connect to server
+    // 10. Connect to server
     const randomNum = Math.floor(100 + Math.random() * 900);
-    this.network.connect(`Novice_${randomNum}`);
+    this.network.connect(`Arin_${randomNum}`);
+  }
+
+  private spawnLocalPlayer() {
+    const defaultId = 'local_player';
+    if (!this.players.has(defaultId)) {
+      const char = new CharacterRenderer(defaultId, 'Arin', 'Novice', false);
+      char.group.position.set(0, 0, 0);
+      char.targetPosition.set(0, 0, 0);
+      char.updateHealth(458, 458);
+      this.scene.add(char.group);
+      this.players.set(defaultId, char);
+      this.hud.updatePlayerInfo('Arin', 'Novice', 12, 1);
+      this.hud.updatePlayerStats(458, 458, 72, 72);
+      this.cameraController.target.set(0, 0, 0);
+    }
   }
 
   private setupInteractions() {
@@ -169,8 +187,16 @@ export class Game {
         this.currentTargetId = '';
         this.hud.hideTarget();
 
-        // Send move to server
-        this.network.sendMoveTo(point.x, point.z);
+        // Send move to server or move local directly
+        if (this.network.room) {
+          this.network.sendMoveTo(point.x, point.z);
+        } else {
+          const local = this.players.get('local_player');
+          if (local) {
+            local.targetPosition.set(point.x, 0, point.z);
+            local.isMoving = true;
+          }
+        }
       }
     });
 
@@ -188,6 +214,16 @@ export class Game {
 
   private addPlayer(sessionId: string, player: any) {
     const isLocal = sessionId === this.network.sessionId;
+
+    // Remove placeholder local player if real network session arrives
+    if (isLocal) {
+      const preview = this.players.get('local_player');
+      if (preview) {
+        this.scene.remove(preview.group);
+        this.players.delete('local_player');
+      }
+    }
+
     const char = new CharacterRenderer(sessionId, player.name, 'Novice', false);
     char.group.position.set(player.x, player.y, player.z);
     char.targetPosition.set(player.x, player.y, player.z);
@@ -282,7 +318,7 @@ export class Game {
     const timeSec = timeMs / 1000;
 
     // 1. Follow Local Player with Camera & Update Minimap
-    const localPlayer = this.players.get(this.network.sessionId);
+    const localPlayer = this.players.get(this.network.sessionId) || this.players.get('local_player');
     if (localPlayer) {
       this.cameraController.followTarget(localPlayer.group.position, 0.1);
       this.hud.updateMinimap(
@@ -312,7 +348,7 @@ export class Game {
       }
     }
 
-    // 5. Render Scene with HD-2D PostProcessing
-    this.postProcessing.render();
+    // 5. Render Scene with HD-2D PostProcessing (with fallback)
+    this.postProcessing.render(this.renderer, this.scene, this.cameraController.camera);
   }
 }
