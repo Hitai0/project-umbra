@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Ragnarok HD-2D Online</title>
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+<body>
+  <!-- Three.js Canvas Container -->
+  <div id="game-container"></div>
+
+  <!-- Ragnarok UI Overlay -->
+  <div id="ui-overlay">
+    <!-- Top-Left: Character Status Window -->
+    <div id="status-window" class="ro-window">
+      <div class="status-header">
+        <span id="player-name" class="char-name">Novice</span>
+        <span id="player-job" class="char-job">[Novice]</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">Base Lv:</span>
+        <span id="base-level" class="stat-val">1</span>
+        <span class="stat-label" style="margin-left: 10px;">Job Lv:</span>
+        <span id="job-level" class="stat-val">1</span>
+      </div>
+      <div class="bar-container hp-bar-bg">
+        <div id="hp-bar" class="bar-fill hp-fill" style="width: 100%;"></div>
+        <span id="hp-text" class="bar-text">100 / 100</span>
+      </div>
+      <div class="bar-container sp-bar-bg">
+        <div id="sp-bar" class="bar-fill sp-fill" style="width: 100%;"></div>
+        <span id="sp-text" class="bar-text">30 / 30</span>
+      </div>
+    </div>
+
+    <!-- Top-Center: Target Info Window (when clicking a monster) -->
+    <div id="target-window" class="ro-window" style="display: none;">
+      <div class="target-name-header">
+        <span id="target-name">Poring</span>
+      </div>
+      <div class="bar-container hp-bar-bg target-bar">
+        <div id="target-hp-bar" class="bar-fill hp-fill" style="width: 100%;"></div>
+        <span id="target-hp-text" class="bar-text">50 / 50</span>
+      </div>
+    </div>
+
+    <!-- Top-Right: Mini Info & Controls -->
+    <div id="info-window" class="ro-window">
+      <div class="info-title">Prontera Field (08)</div>
+      <div class="info-controls">
+        🖱️ <b>Left-Click:</b> Walk / Attack<br />
+        🔄 <b>Right-Click Drag:</b> Orbit Camera<br />
+        🔍 <b>Scroll:</b> Zoom In/Out<br />
+        💬 <b>Enter:</b> Chat<br />
+        <span id="ping-text">Ping: -- ms</span>
+      </div>
+    </div>
+
+    <!-- Bottom-Left: Chat Box -->
+    <div id="chat-window" class="ro-window">
+      <div class="chat-tabs">
+        <button class="chat-tab active" data-channel="all">All</button>
+        <button class="chat-tab" data-channel="battle">Battle</button>
+      </div>
+      <div id="chat-messages" class="chat-body">
+        <div class="chat-msg system">⚔️ Welcome to Ragnarok HD-2D Online!</div>
+        <div class="chat-msg system">💡 Click the ground to move, click monsters to attack.</div>
+      </div>
+      <form id="chat-form">
+        <input type="text" id="chat-input" placeholder="Press Enter to chat..." maxlength="100" autocomplete="off" />
+      </form>
+    </div>
+
+    <!-- Bottom-Right: Quick Action Bar -->
+    <div id="action-bar">
+      <button id="btn-attack" class="action-btn" title="Auto Attack Target">⚔️ Atk</button>
+      <button id="btn-sit" class="action-btn" title="Sit / Stand">🧘 Sit</button>
+      <button id="btn-emote" class="action-btn" title="Emote">❤️ /lv</button>
+    </div>
+
+    <!-- Damage Popups Container -->
+    <div id="damage-container"></div>
+  </div>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>

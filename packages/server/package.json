@@ -1,0 +1,31 @@
+{
+  "name": "@mmo/server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "@colyseus/schema": "^2.0.36",
+    "@colyseus/ws-transport": "^0.15.0",
+    "@mmo/shared": "*",
+    "colyseus": "^0.15.43",
+    "cors": "^2.8.5",
+    "drizzle-orm": "^0.39.3",
+    "express": "^4.21.2",
+    "ioredis": "^5.5.0",
+    "postgres": "^3.4.5"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.13.4",
+    "drizzle-kit": "^0.30.4",
+    "tsx": "^4.19.3",
+    "typescript": "^5.7.3"
+  }
+}
