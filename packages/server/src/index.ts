@@ -17,7 +17,7 @@ app.use(express.json());
 app.get('/health', (req, res) => {
   res.json({
     status: 'ok',
-    game: 'Ragnarok HD-2D MMO Server',
+    game: 'Project Umbra MMO Server',
     uptime: process.uptime()
   });
 });
@@ -40,7 +40,7 @@ initDatabase();
 server.listen(port, () => {
   console.log(`
   ================================================
-  ⚔️  RAGNAROK HD-2D MMORPG GAME SERVER ⚔️
+  ⚔️  PROJECT UMBRA - HD-2D MMORPG SERVER ⚔️
   ================================================
   🚀 WebSocket Port: ${port}
   🌐 Health check:   http://localhost:${port}/health

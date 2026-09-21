@@ -1,6 +1,6 @@
-# Ragnarok HD-2D Online (Cross-Platform MMORPG)
+# Project Umbra (HD-2D Cross-Platform MMORPG)
 
-A Web-Native, Code-First cross-platform MMORPG inspired by classic **Ragnarok Online** and rendered in the **HD-2D** aesthetic of *Octopath Traveler* (3D terrain, dynamic lighting, tilt-shift depth of field, and 2D billboard pixel art sprites).
+A Web-Native, Code-First cross-platform MMORPG inspired by classic Ragnarok Online and rendered in the **HD-2D** aesthetic of *Octopath Traveler* (3D terrain, dynamic lighting, tilt-shift depth of field, and 2D billboard pixel art sprites).
 
 ---
 
