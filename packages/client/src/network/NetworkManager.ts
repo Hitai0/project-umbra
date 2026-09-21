@@ -33,7 +33,18 @@ export class NetworkManager {
 
       this.sessionId = this.room.sessionId;
       this.callbacks.onConnected(this.sessionId);
-      console.log(` Connected to WorldRoom as ${this.sessionId}`);
+      console.log(`✅ Connected to WorldRoom as ${this.sessionId}`);
+
+      // Handle server disconnection / reconnect
+      this.room.onLeave((code) => {
+        console.warn(`⚠️ Disconnected from server (code ${code}). Reconnecting in 2.5s...`);
+        this.room = null;
+        setTimeout(() => this.connect(playerName), 2500);
+      });
+
+      this.room.onError((code, message) => {
+        console.error(`❌ Room error: ${code} - ${message}`);
+      });
 
       // 1. Players Sync
       this.room.state.players.onAdd((player: any, sessionId: string) => {
@@ -71,7 +82,8 @@ export class NetworkManager {
       });
 
     } catch (err) {
-      console.error('❌ Failed to connect to game server:', err);
+      console.error('❌ Failed to connect to game server. Retrying in 2.5s...', err);
+      setTimeout(() => this.connect(playerName), 2500);
     }
   }
 

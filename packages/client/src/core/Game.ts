@@ -81,13 +81,19 @@ export class Game {
     this.scene.add(this.clickRing);
 
     // 6. Network Manager setup
-    const defaultHost = window.location.hostname || 'localhost';
-    const defaultServerUrl = `${window.location.protocol === 'https:' ? 'wss:' : 'ws:'}//${defaultHost}:2567`;
+    const isLocal = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+    const defaultServerUrl = isLocal ? 'ws://localhost:2567' : 'wss://project-umbra.bonto.run';
     const serverUrl = (import.meta.env.VITE_SERVER_URL as string) || defaultServerUrl;
+    console.log(`🌐 Connecting to game server: ${serverUrl}`);
 
     this.network = new NetworkManager(serverUrl, {
       onConnected: (sessionId) => {
         console.log(`Connected with session ID: ${sessionId}`);
+        this.chatBox.addMessage({
+          senderName: 'System',
+          text: 'Connected to realm (Multiplayer active)',
+          channel: 'all'
+        });
       },
       onPlayerAdd: (player, sessionId) => {
         this.addPlayer(sessionId, player);
